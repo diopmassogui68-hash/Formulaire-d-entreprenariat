@@ -215,7 +215,7 @@ R2_VIDEO_TAILLE_MAX_MO = int(_env("R2_VIDEO_TAILLE_MAX_MO", "100"))
 # Clôture des inscriptions (heure de Dakar). Format ISO 8601.
 DATE_LIMITE_INSCRIPTION = _env("DATE_LIMITE_INSCRIPTION", "2026-11-14T23:59:59+00:00")
 # Clôture des candidatures aux élections (heure de Dakar = UTC). Format ISO 8601.
-# Vote en ligne (heure de Dakar = UTC) : du jeudi 26 novembre 8h au vendredi 27 novembre 18h.
+# Vote en ligne (heure de Dakar = UTC) : du jeudi 26 novembre 8h au samedi 28 novembre 20h (prolongation).
 VOTE_DEBUT = _env("VOTE_DEBUT", "2026-11-26T08:00:00+00:00")
-VOTE_FIN = _env("VOTE_FIN", "2026-11-27T18:00:00+00:00")
+VOTE_FIN = _env("VOTE_FIN", "2026-11-28T20:00:00+00:00")
 DATE_LIMITE_CANDIDATURES = _env("DATE_LIMITE_CANDIDATURES", "2026-11-23T23:59:59+00:00")

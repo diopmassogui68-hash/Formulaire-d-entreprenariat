@@ -174,6 +174,29 @@ class HorairesVoteTests(TestCase):
         r = self.admin.post(self.URL, {"fin": "2099-12-31T23:59:59", "motif": "Réouverture"}, format="json")
         self.assertEqual(r.status_code, 409)
 
+    def test_prolongation_28_novembre_20h(self):
+        from datetime import datetime, timezone as dt_timezone
+        from importlib import import_module
+        from django.apps import apps
+        from django.conf import settings
+        from .models import HorairesVote, ModificationHorairesVote
+        from .vote import etat_vote
+
+        self.assertEqual(settings.VOTE_FIN, "2026-11-28T20:00:00+00:00")
+        self.assertEqual(etat_vote(datetime(2026, 11, 27, 18, 25, tzinfo=dt_timezone.utc)), "ouvert")
+        self.assertEqual(etat_vote(datetime(2026, 11, 28, 20, 1, tzinfo=dt_timezone.utc)), "clos")
+
+        mig = import_module("inscriptions.migrations.0013_prolonger_vote")
+        HorairesVote.objects.create(
+            id=1,
+            debut=datetime(2026, 11, 26, 8, 0, tzinfo=dt_timezone.utc),
+            fin=datetime(2026, 11, 27, 18, 0, tzinfo=dt_timezone.utc),
+        )
+        mig.prolonger_si_horaires_en_base(apps, None)
+        h = HorairesVote.objects.get(id=1)
+        self.assertEqual(h.fin, datetime(2026, 11, 28, 20, 0, tzinfo=dt_timezone.utc))
+        self.assertEqual(ModificationHorairesVote.objects.count(), 1)
+
 
 @override_settings(**OUVERT, THROTTLE_DISABLED=True)
 class ElecteursAjoutesTests(TestCase):
